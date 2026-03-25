@@ -13,9 +13,9 @@ export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 px-4">
+    <header className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 px-4 md:px-6">
       <div
-        className="w-full max-w-4xl rounded-2xl
+        className="w-full max-w-5xl rounded-2xl
                     bg-white/40 backdrop-blur-2xl backdrop-saturate-150
                     border border-white/50
                     shadow-[0_1px_2px_rgba(0,0,0,0.04),0_4px_16px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.6)]"
@@ -25,9 +25,14 @@ export function Header() {
             {/* Logo / Wordmark */}
             <Link
               href="/"
-              className="text-heading text-[14px] font-semibold tracking-[-0.035em] uppercase"
+              className="flex items-center gap-2.5"
             >
-              [Company]
+              <div className="w-7 h-7 rounded-lg bg-heading flex items-center justify-center">
+                <span className="text-white text-[11px] font-bold">A</span>
+              </div>
+              <span className="text-heading text-[14px] font-semibold tracking-[-0.02em]">
+                company
+              </span>
             </Link>
 
             {/* Desktop nav */}
@@ -51,7 +56,7 @@ export function Header() {
               <a
                 href="#contact"
                 className="inline-flex items-center h-8 px-4 text-[12px] font-medium tracking-wide
-                           bg-heading/90 text-white rounded-lg
+                           bg-heading/90 text-white rounded-full
                            hover:bg-heading hover:scale-[1.03] active:scale-[0.97]
                            focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-heading
                            transition-all duration-200 ease-out"
@@ -97,7 +102,7 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className="py-2 px-2 rounded-lg text-[14px] font-medium text-heading/60
+                className="py-2 px-2 rounded-lg text-[14px] font-medium text-heading/45
                            hover:text-heading hover:bg-white/40 transition-all duration-200"
               >
                 {item.label}
@@ -107,7 +112,7 @@ export function Header() {
               href="#contact"
               onClick={() => setMobileOpen(false)}
               className="mt-2 inline-flex items-center justify-center h-9 px-5 text-[13px] font-medium tracking-wide
-                         bg-heading/90 text-white rounded-lg
+                         bg-heading/90 text-white rounded-full
                          hover:bg-heading transition-colors duration-200"
             >
               Get in touch
