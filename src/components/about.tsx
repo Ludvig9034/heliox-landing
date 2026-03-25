@@ -5,12 +5,13 @@ export function About() {
     { name: "Lorem Ipsum", role: "Dolor sit amet" },
     { name: "Consectetur Elit", role: "Sed do eiusmod" },
     { name: "Tempor Incididunt", role: "Ut labore dolore" },
+    { name: "Adipiscing Sed", role: "Magna aliqua" },
   ];
 
   return (
     <section id="about" className="bg-white py-16 md:py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-28 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-28 items-center">
           {/* Left: about text */}
           <FadeIn>
             <p className="text-[12px] font-medium tracking-[0.2em] uppercase text-muted mb-4">
@@ -28,11 +29,11 @@ export function About() {
 
           {/* Right: team */}
           <FadeIn stagger>
-            <div className="flex flex-col gap-6">
+            <div className="grid grid-cols-2 gap-x-8 gap-y-6">
               {team.map((person) => (
                 <div
                   key={person.name}
-                  className="fade-in group flex items-center gap-5 cursor-default"
+                  className="fade-in group flex items-center gap-4 cursor-default"
                 >
                   <div className="w-14 h-14 flex-shrink-0 rounded-full bg-surface border border-border
                                   group-hover:border-heading/20 group-hover:scale-105

@@ -1,4 +1,5 @@
 import { FadeIn } from "./fade-in";
+import { cn } from "@/lib/utils";
 
 export function Contact() {
   return (
@@ -16,14 +17,21 @@ export function Contact() {
           </p>
           <a
             href="mailto:hello@example.com"
-            className="mt-10 inline-flex items-center h-12 px-8 text-[14px] font-medium tracking-wide
-                       bg-white text-heading rounded-full
-                       hover:bg-white/90 hover:scale-[1.03] hover:shadow-[0_4px_20px_rgba(255,255,255,0.15)]
-                       active:scale-[0.98]
-                       focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white
-                       transition-all duration-200 ease-out"
+            className={cn(
+              `relative z-0 mt-10 inline-flex items-center justify-center h-12 px-8
+               text-[14px] font-medium tracking-wide rounded-full cursor-pointer
+               bg-white text-heading overflow-hidden
+               transition-all duration-500
+               before:absolute before:inset-0 before:-z-10
+               before:translate-x-[150%] before:translate-y-[150%] before:scale-[2.5]
+               before:rounded-[100%] before:bg-heading/10 before:transition-transform before:duration-700 before:content-[""]
+               hover:scale-[1.03] hover:shadow-[0_4px_20px_rgba(255,255,255,0.15)]
+               hover:before:translate-x-[0%] hover:before:translate-y-[0%]
+               active:scale-[0.97]
+               focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white`
+            )}
           >
-            Lorem ipsum →
+            <span className="relative z-10">Lorem ipsum →</span>
           </a>
         </div>
       </FadeIn>

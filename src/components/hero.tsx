@@ -1,4 +1,5 @@
 import { FadeIn } from "./fade-in";
+import { Button } from "./ui/button";
 
 export function Hero() {
   return (
@@ -24,26 +25,10 @@ export function Hero() {
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-3">
-                <a
-                  href="#contact"
-                  className="inline-flex items-center h-11 px-6 text-[14px] font-medium tracking-wide
-                             bg-heading text-white rounded-full
-                             hover:bg-heading/85 hover:scale-[1.02] active:scale-[0.98]
-                             focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-heading
-                             transition-all duration-200 ease-out"
-                >
-                  Lorem ipsum
-                </a>
-                <a
-                  href="#services"
-                  className="inline-flex items-center h-11 px-6 text-[14px] font-medium tracking-wide
-                             text-heading border border-border rounded-full
-                             hover:border-heading/30 hover:bg-surface hover:scale-[1.02] active:scale-[0.98]
-                             focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-heading
-                             transition-all duration-200 ease-out"
-                >
+                <Button href="#contact">Lorem ipsum</Button>
+                <Button href="#services" variant="secondary">
                   Dolor sit amet
-                </a>
+                </Button>
               </div>
             </div>
           </FadeIn>

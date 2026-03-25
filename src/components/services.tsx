@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { FadeIn } from "./fade-in";
+import { Button } from "./ui/button";
 
 const categories = [
   {
@@ -143,16 +144,9 @@ export function Services() {
                   </div>
                 ))}
 
-                <a
-                  href="#contact"
-                  className="mt-3 inline-flex items-center self-start h-11 px-6 text-[14px] font-medium tracking-wide
-                             bg-heading text-white rounded-full
-                             hover:bg-heading/85 hover:scale-[1.02] active:scale-[0.98]
-                             focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-heading
-                             transition-all duration-200 ease-out"
-                >
+                <Button href="#contact" className="mt-3 self-start">
                   Lorem ipsum →
-                </a>
+                </Button>
               </div>
             </div>
           </div>
