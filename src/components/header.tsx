@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import { LogoLoop } from "./logo";
 
 const navItems = [
   { label: "Services", href: "#services" },
@@ -69,9 +70,7 @@ export function Header() {
           <div className="flex h-14 items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-lg bg-heading flex items-center justify-center">
-                <span className="text-white text-[11px] font-bold">A</span>
-              </div>
+              <LogoLoop size={24} className="text-heading" />
               <span className="text-heading text-[14px] font-semibold tracking-[-0.02em]">
                 company
               </span>
@@ -83,7 +82,7 @@ export function Header() {
                 <a
                   key={item.href}
                   href={item.href}
-                  className="px-3.5 py-1.5 rounded-lg text-[13px] font-medium text-heading/50 tracking-wide
+                  className="px-3.5 py-1.5 rounded-lg text-[13px] font-medium text-heading/60 tracking-wide
                              hover:text-heading hover:bg-white/30
                              focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-heading
                              transition-all duration-200"
@@ -137,7 +136,7 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className="py-2 px-2 rounded-lg text-[14px] font-medium text-heading/50
+                className="py-2 px-2 rounded-lg text-[14px] font-medium text-heading/60
                            hover:text-heading hover:bg-white/30 transition-all duration-200"
               >
                 {item.label}

@@ -145,7 +145,7 @@ export function Services() {
                 ))}
 
                 <Button href="#contact" className="mt-3 self-start">
-                  Lorem ipsum →
+                  Lorem ipsum
                 </Button>
               </div>
             </div>
