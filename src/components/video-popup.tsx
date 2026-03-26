@@ -18,8 +18,17 @@ export function VideoPopup() {
   useEffect(() => {
     if (localStorage.getItem(DISMISS_KEY)) return;
     setDismissed(false);
-    const timer = setTimeout(() => setVisible(true), 3000);
-    return () => clearTimeout(timer);
+
+    const handleScroll = () => {
+      // Show after scrolling past ~60% of viewport height
+      if (window.scrollY > window.innerHeight * 0.6) {
+        setVisible(true);
+        window.removeEventListener("scroll", handleScroll);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleDismiss = useCallback(() => {
