@@ -8,13 +8,13 @@ const DISMISS_KEY = "video-popup-dismissed";
 
 export function VideoPopup() {
   const [visible, setVisible] = useState(false);
-  const [dismissed, setDismissed] = useState(true); // start hidden, check localStorage
+  const [dismissed, setDismissed] = useState(true);
   const [paused, setPaused] = useState(false);
-  const [muted, setMuted] = useState(true); // autoplay requires muted
+  const [muted, setMuted] = useState(true);
   const [progress, setProgress] = useState(0);
+  const [showTapIcon, setShowTapIcon] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Check localStorage on mount + trigger show after delay
   useEffect(() => {
     if (localStorage.getItem(DISMISS_KEY)) return;
     setDismissed(false);
@@ -25,7 +25,7 @@ export function VideoPopup() {
   const handleDismiss = useCallback(() => {
     setDismissed(true);
     localStorage.setItem(DISMISS_KEY, "1");
-    if (videoRef.current) videoRef.current.pause();
+    videoRef.current?.pause();
   }, []);
 
   const togglePause = useCallback(() => {
@@ -33,6 +33,8 @@ export function VideoPopup() {
     if (!v) return;
     if (v.paused) { v.play(); setPaused(false); }
     else { v.pause(); setPaused(true); }
+    setShowTapIcon(true);
+    setTimeout(() => setShowTapIcon(false), 600);
   }, []);
 
   const toggleMute = useCallback(() => {
@@ -52,7 +54,7 @@ export function VideoPopup() {
 
   return (
     <div
-      className={`fixed bottom-6 right-6 z-50 w-[280px] hidden md:block
+      className={`fixed bottom-4 right-4 z-50 w-[200px] md:w-[280px] md:bottom-6 md:right-6
                   transition-[opacity,transform] duration-500 ease-out
                   ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}
     >
@@ -62,24 +64,23 @@ export function VideoPopup() {
         <button
           type="button"
           onClick={handleDismiss}
-          className="absolute top-3 right-3 z-10 w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm
+          className="absolute top-2 right-2 md:top-3 md:right-3 z-10 w-6 h-6 md:w-7 md:h-7 rounded-full bg-black/40 backdrop-blur-sm
                      flex items-center justify-center cursor-pointer
                      hover:bg-black/60 transition-colors duration-200
                      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           aria-label="Luk"
         >
-          <X className="w-3.5 h-3.5 text-white" />
+          <X className="w-3 h-3 md:w-3.5 md:h-3.5 text-white" />
         </button>
 
         {/* Full-bleed video */}
         <div className="aspect-[7/12] relative overflow-hidden group/video">
-          {/* Placeholder image shown until video is ready */}
           <Image
             src="/images/pop-up.jpeg"
             alt=""
             fill
             className="object-cover"
-            sizes="280px"
+            sizes="(max-width: 768px) 200px, 280px"
             priority
           />
 
@@ -96,24 +97,41 @@ export function VideoPopup() {
             <source src="/images/9x16_Motii_VSL Feb 2026_Loud Colors.mp4" type="video/mp4" />
           </video>
 
-          {/* Bottom gradient for button readability */}
+          {/* Bottom gradient */}
           <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" />
 
-          {/* Progress bar — top edge */}
-          <div className="absolute inset-x-0 top-0 z-20 h-[4px] bg-black/20">
+          {/* Progress bar */}
+          <div className="absolute inset-x-0 top-0 z-20 h-[3px] md:h-[4px] bg-black/20">
             <div
               className="h-full bg-white transition-[width] duration-200 ease-linear"
               style={{ width: `${progress}%` }}
             />
           </div>
 
-          {/* Video controls — above action buttons */}
-          <div className="absolute bottom-[116px] left-3 z-20 flex items-center gap-1.5
+          {/* Tap-to-pause overlay (mobile) */}
+          <button
+            type="button"
+            onClick={togglePause}
+            className="absolute inset-0 z-[15] md:hidden cursor-pointer"
+            aria-label={paused ? "Afspil" : "Pause"}
+          />
+          {/* Tap feedback icon (mobile) */}
+          <div className={`absolute inset-0 z-[16] md:hidden flex items-center justify-center pointer-events-none
+                           transition-opacity duration-300 ${showTapIcon ? "opacity-100" : "opacity-0"}`}>
+            <div className="w-12 h-12 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center">
+              {paused
+                ? <Pause className="w-5 h-5 text-white" />
+                : <Play className="w-5 h-5 text-white ml-0.5" />}
+            </div>
+          </div>
+
+          {/* Video controls (desktop only) */}
+          <div className="absolute bottom-[116px] left-3 z-20 hidden md:flex items-center gap-1.5
                           opacity-0 group-hover/video:opacity-100 transition-opacity duration-200">
             <button
               type="button"
               onClick={togglePause}
-              className="group/btn relative z-0 w-8 h-8 rounded-full overflow-hidden cursor-pointer
+              className="group/btn relative z-0 w-7 h-7 md:w-8 md:h-8 rounded-full overflow-hidden cursor-pointer
                          bg-gradient-to-b from-white/20 to-white/5 backdrop-blur-md
                          border border-white/[0.12]
                          ring-1 ring-inset ring-white/10
@@ -135,7 +153,7 @@ export function VideoPopup() {
             <button
               type="button"
               onClick={toggleMute}
-              className="group/btn relative z-0 w-8 h-8 rounded-full overflow-hidden cursor-pointer
+              className="group/btn relative z-0 w-7 h-7 md:w-8 md:h-8 rounded-full overflow-hidden cursor-pointer
                          bg-gradient-to-b from-white/20 to-white/5 backdrop-blur-md
                          border border-white/[0.12]
                          ring-1 ring-inset ring-white/10
@@ -156,12 +174,12 @@ export function VideoPopup() {
             </button>
           </div>
 
-          {/* Action buttons — overlaid at bottom */}
-          <div className="absolute inset-x-0 bottom-0 z-10 p-3 flex flex-col gap-2">
+          {/* Action buttons */}
+          <div className="absolute inset-x-0 bottom-0 z-10 p-2.5 md:p-3 flex flex-col gap-1.5 md:gap-2">
             <a
               href="tel:+4512345678"
-              className="group relative z-0 inline-flex items-center justify-center gap-2 h-10 rounded-lg
-                         text-[13px] font-medium tracking-wide cursor-pointer overflow-hidden
+              className="group relative z-0 inline-flex items-center justify-center gap-2 h-9 md:h-10 rounded-lg
+                         text-[12px] md:text-[13px] font-medium tracking-wide cursor-pointer overflow-hidden
                          bg-gradient-to-b from-white to-white/85 text-heading
                          border border-b-2 border-heading/[0.06]
                          ring-1 ring-inset ring-heading/[0.04]
@@ -180,8 +198,8 @@ export function VideoPopup() {
             <a
               href="#contact"
               onClick={handleDismiss}
-              className="group relative z-0 inline-flex items-center justify-center gap-2 h-10 rounded-lg
-                         text-[13px] font-medium tracking-wide cursor-pointer overflow-hidden
+              className="group relative z-0 inline-flex items-center justify-center gap-2 h-9 md:h-10 rounded-lg
+                         text-[12px] md:text-[13px] font-medium tracking-wide cursor-pointer overflow-hidden
                          bg-gradient-to-b from-white/15 to-white/5 text-white
                          border border-b-2 border-white/[0.08]
                          ring-1 ring-inset ring-white/10

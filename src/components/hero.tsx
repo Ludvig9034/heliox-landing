@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 
 export function Hero() {
   return (
-    <section className="min-h-[100svh] flex flex-col justify-center bg-white pt-16">
+    <section className="md:min-h-[100svh] flex flex-col md:justify-center bg-white pt-16">
       {/* Top section: split layout */}
       <div className="mx-auto w-full max-w-7xl px-6 lg:px-10 pt-10 md:pt-14">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-28 items-start">
