@@ -1,11 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Phone, MessageCircle } from "lucide-react";
+import { X, Phone, MessageCircle, Pause, Play, Volume2, VolumeOff } from "lucide-react";
 
 export function VideoPopup() {
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
+  const [paused, setPaused] = useState(false);
+  const [muted, setMuted] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setVisible(true), 3000);
@@ -20,7 +22,8 @@ export function VideoPopup() {
                   transition-[opacity,transform] duration-500 ease-out
                   ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}
     >
-      <div className="relative rounded-2xl overflow-hidden bg-heading shadow-[0_8px_40px_rgba(0,0,0,0.2)]">
+      <div className="relative rounded-2xl overflow-hidden
+                      shadow-[0_8px_40px_rgba(0,0,0,0.2),0_0_6px_rgba(0,0,0,0.03),0_2px_8px_rgba(0,0,0,0.06),inset_3px_3px_0.5px_-3px_rgba(255,255,255,0.15),inset_-3px_-3px_0.5px_-3px_rgba(255,255,255,0.12),inset_1px_1px_1px_-0.5px_rgba(255,255,255,0.1),inset_-1px_-1px_1px_-0.5px_rgba(255,255,255,0.1),inset_0_0_8px_6px_rgba(255,255,255,0.03)]">
         {/* Dismiss button */}
         <button
           type="button"
@@ -34,15 +37,68 @@ export function VideoPopup() {
           <X className="w-3.5 h-3.5 text-white" />
         </button>
 
-        {/* Portrait video placeholder */}
-        <div className="aspect-[3/4] bg-heading/90 flex items-center justify-center">
-          <p className="text-white/20 text-[11px] font-medium tracking-widest uppercase">
-            Video
-          </p>
-        </div>
+        {/* Full-bleed image */}
+        <div className="aspect-[7/12] relative overflow-hidden group/video">
+          <img
+            src="/images/pop-up.jpeg"
+            alt="Portrait placeholder"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
 
-        {/* Action buttons */}
-        <div className="p-3 flex flex-col gap-2">
+          {/* Bottom gradient for button readability */}
+          <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" />
+
+          {/* Video controls — above action buttons */}
+          <div className="absolute bottom-[116px] left-3 z-20 flex items-center gap-1.5
+                          opacity-0 group-hover/video:opacity-100 transition-opacity duration-200">
+            <button
+              type="button"
+              onClick={() => setPaused(!paused)}
+              className="group/btn relative z-0 w-8 h-8 rounded-full overflow-hidden cursor-pointer
+                         bg-gradient-to-b from-white/20 to-white/5 backdrop-blur-md
+                         border border-white/[0.12]
+                         ring-1 ring-inset ring-white/10
+                         shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_1px_3px_rgba(0,0,0,0.2)]
+                         flex items-center justify-center
+                         transition-transform duration-300
+                         before:absolute before:inset-0 before:-z-10
+                         before:translate-x-[150%] before:translate-y-[150%] before:scale-[2.5]
+                         before:rounded-[100%] before:bg-white/15 before:transition-transform before:duration-500 before:content-['']
+                         hover:scale-110 hover:before:translate-x-[0%] hover:before:translate-y-[0%]
+                         active:scale-95
+                         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              aria-label={paused ? "Afspil" : "Pause"}
+            >
+              {paused
+                ? <Play className="relative z-10 w-3 h-3 text-white ml-0.5" />
+                : <Pause className="relative z-10 w-3 h-3 text-white" />}
+            </button>
+            <button
+              type="button"
+              onClick={() => setMuted(!muted)}
+              className="group/btn relative z-0 w-8 h-8 rounded-full overflow-hidden cursor-pointer
+                         bg-gradient-to-b from-white/20 to-white/5 backdrop-blur-md
+                         border border-white/[0.12]
+                         ring-1 ring-inset ring-white/10
+                         shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_1px_3px_rgba(0,0,0,0.2)]
+                         flex items-center justify-center
+                         transition-transform duration-300
+                         before:absolute before:inset-0 before:-z-10
+                         before:translate-x-[150%] before:translate-y-[150%] before:scale-[2.5]
+                         before:rounded-[100%] before:bg-white/15 before:transition-transform before:duration-500 before:content-['']
+                         hover:scale-110 hover:before:translate-x-[0%] hover:before:translate-y-[0%]
+                         active:scale-95
+                         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              aria-label={muted ? "Slå lyd til" : "Slå lyd fra"}
+            >
+              {muted
+                ? <VolumeOff className="relative z-10 w-3 h-3 text-white" />
+                : <Volume2 className="relative z-10 w-3 h-3 text-white" />}
+            </button>
+          </div>
+
+          {/* Action buttons — overlaid at bottom */}
+          <div className="absolute inset-x-0 bottom-0 z-10 p-3 flex flex-col gap-2">
           <a
             href="tel:+4512345678"
             className="group relative z-0 inline-flex items-center justify-center gap-2 h-10 rounded-lg
@@ -82,6 +138,7 @@ export function VideoPopup() {
             <MessageCircle className="relative z-10 w-3.5 h-3.5" />
             <span className="relative z-10">Lorem ipsum</span>
           </a>
+          </div>
         </div>
       </div>
     </div>
