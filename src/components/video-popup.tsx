@@ -1,24 +1,58 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import Image from "next/image";
 import { X, Phone, MessageCircle, Pause, Play, Volume2, VolumeOff } from "lucide-react";
+
+const DISMISS_KEY = "video-popup-dismissed";
 
 export function VideoPopup() {
   const [visible, setVisible] = useState(false);
-  const [dismissed, setDismissed] = useState(false);
+  const [dismissed, setDismissed] = useState(true); // start hidden, check localStorage
   const [paused, setPaused] = useState(false);
-  const [muted, setMuted] = useState(false);
+  const [muted, setMuted] = useState(true); // autoplay requires muted
+  const [progress, setProgress] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
+  // Check localStorage on mount + trigger show after delay
   useEffect(() => {
+    if (localStorage.getItem(DISMISS_KEY)) return;
+    setDismissed(false);
     const timer = setTimeout(() => setVisible(true), 3000);
     return () => clearTimeout(timer);
+  }, []);
+
+  const handleDismiss = useCallback(() => {
+    setDismissed(true);
+    localStorage.setItem(DISMISS_KEY, "1");
+    if (videoRef.current) videoRef.current.pause();
+  }, []);
+
+  const togglePause = useCallback(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) { v.play(); setPaused(false); }
+    else { v.pause(); setPaused(true); }
+  }, []);
+
+  const toggleMute = useCallback(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = !v.muted;
+    setMuted(v.muted);
+  }, []);
+
+  const handleTimeUpdate = useCallback(() => {
+    const v = videoRef.current;
+    if (!v || !v.duration) return;
+    setProgress((v.currentTime / v.duration) * 100);
   }, []);
 
   if (dismissed) return null;
 
   return (
     <div
-      className={`fixed bottom-6 right-6 z-50 w-[280px]
+      className={`fixed bottom-6 right-6 z-50 w-[280px] hidden md:block
                   transition-[opacity,transform] duration-500 ease-out
                   ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}
     >
@@ -27,7 +61,7 @@ export function VideoPopup() {
         {/* Dismiss button */}
         <button
           type="button"
-          onClick={() => setDismissed(true)}
+          onClick={handleDismiss}
           className="absolute top-3 right-3 z-10 w-7 h-7 rounded-full bg-black/40 backdrop-blur-sm
                      flex items-center justify-center cursor-pointer
                      hover:bg-black/60 transition-colors duration-200
@@ -37,23 +71,48 @@ export function VideoPopup() {
           <X className="w-3.5 h-3.5 text-white" />
         </button>
 
-        {/* Full-bleed image */}
+        {/* Full-bleed video */}
         <div className="aspect-[7/12] relative overflow-hidden group/video">
-          <img
+          {/* Placeholder image shown until video is ready */}
+          <Image
             src="/images/pop-up.jpeg"
-            alt="Portrait placeholder"
-            className="absolute inset-0 w-full h-full object-cover"
+            alt=""
+            fill
+            className="object-cover"
+            sizes="280px"
+            priority
           />
+
+          <video
+            ref={videoRef}
+            className="absolute inset-0 w-full h-full object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+            onTimeUpdate={handleTimeUpdate}
+            poster="/images/pop-up.jpeg"
+          >
+            <source src="/images/9x16_Motii_VSL Feb 2026_Loud Colors.mp4" type="video/mp4" />
+          </video>
 
           {/* Bottom gradient for button readability */}
           <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" />
+
+          {/* Progress bar */}
+          <div className="absolute inset-x-0 bottom-[100px] z-20 h-[2px] bg-white/10">
+            <div
+              className="h-full bg-white/60 transition-[width] duration-200 ease-linear"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
 
           {/* Video controls — above action buttons */}
           <div className="absolute bottom-[116px] left-3 z-20 flex items-center gap-1.5
                           opacity-0 group-hover/video:opacity-100 transition-opacity duration-200">
             <button
               type="button"
-              onClick={() => setPaused(!paused)}
+              onClick={togglePause}
               className="group/btn relative z-0 w-8 h-8 rounded-full overflow-hidden cursor-pointer
                          bg-gradient-to-b from-white/20 to-white/5 backdrop-blur-md
                          border border-white/[0.12]
@@ -75,7 +134,7 @@ export function VideoPopup() {
             </button>
             <button
               type="button"
-              onClick={() => setMuted(!muted)}
+              onClick={toggleMute}
               className="group/btn relative z-0 w-8 h-8 rounded-full overflow-hidden cursor-pointer
                          bg-gradient-to-b from-white/20 to-white/5 backdrop-blur-md
                          border border-white/[0.12]
@@ -99,45 +158,45 @@ export function VideoPopup() {
 
           {/* Action buttons — overlaid at bottom */}
           <div className="absolute inset-x-0 bottom-0 z-10 p-3 flex flex-col gap-2">
-          <a
-            href="tel:+4512345678"
-            className="group relative z-0 inline-flex items-center justify-center gap-2 h-10 rounded-lg
-                       text-[13px] font-medium tracking-wide cursor-pointer overflow-hidden
-                       bg-gradient-to-b from-white to-white/85 text-heading
-                       border border-b-2 border-heading/[0.06]
-                       ring-1 ring-inset ring-heading/[0.04]
-                       shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_1px_3px_rgba(0,0,0,0.06),0_4px_12px_rgba(0,0,0,0.04)]
-                       transition-all duration-500
-                       before:absolute before:inset-0 before:-z-10
-                       before:translate-x-[150%] before:translate-y-[150%] before:scale-[2.5]
-                       before:rounded-[100%] before:bg-heading/[0.04] before:transition-transform before:duration-700 before:content-['']
-                       hover:scale-[1.03] hover:brightness-[0.97] hover:before:translate-x-[0%] hover:before:translate-y-[0%]
-                       active:scale-[0.97] active:brightness-95
-                       focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-          >
-            <Phone className="relative z-10 w-3.5 h-3.5" />
-            <span className="relative z-10">Lorem ipsum</span>
-          </a>
-          <a
-            href="#contact"
-            onClick={() => setDismissed(true)}
-            className="group relative z-0 inline-flex items-center justify-center gap-2 h-10 rounded-lg
-                       text-[13px] font-medium tracking-wide cursor-pointer overflow-hidden
-                       bg-gradient-to-b from-white/15 to-white/5 text-white
-                       border border-b-2 border-white/[0.08]
-                       ring-1 ring-inset ring-white/10
-                       shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_1px_3px_rgba(0,0,0,0.2)]
-                       transition-all duration-500
-                       before:absolute before:inset-0 before:-z-10
-                       before:translate-x-[150%] before:translate-y-[150%] before:scale-[2.5]
-                       before:rounded-[100%] before:bg-white/10 before:transition-transform before:duration-700 before:content-['']
-                       hover:scale-[1.03] hover:brightness-110 hover:before:translate-x-[0%] hover:before:translate-y-[0%]
-                       active:scale-[0.97] active:brightness-90
-                       focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-          >
-            <MessageCircle className="relative z-10 w-3.5 h-3.5" />
-            <span className="relative z-10">Lorem ipsum</span>
-          </a>
+            <a
+              href="tel:+4512345678"
+              className="group relative z-0 inline-flex items-center justify-center gap-2 h-10 rounded-lg
+                         text-[13px] font-medium tracking-wide cursor-pointer overflow-hidden
+                         bg-gradient-to-b from-white to-white/85 text-heading
+                         border border-b-2 border-heading/[0.06]
+                         ring-1 ring-inset ring-heading/[0.04]
+                         shadow-[inset_0_1px_0_rgba(255,255,255,0.8),0_1px_3px_rgba(0,0,0,0.06),0_4px_12px_rgba(0,0,0,0.04)]
+                         transition-all duration-500
+                         before:absolute before:inset-0 before:-z-10
+                         before:translate-x-[150%] before:translate-y-[150%] before:scale-[2.5]
+                         before:rounded-[100%] before:bg-heading/[0.04] before:transition-transform before:duration-700 before:content-['']
+                         hover:scale-[1.03] hover:brightness-[0.97] hover:before:translate-x-[0%] hover:before:translate-y-[0%]
+                         active:scale-[0.97] active:brightness-95
+                         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            >
+              <Phone className="relative z-10 w-3.5 h-3.5" />
+              <span className="relative z-10">Lorem ipsum</span>
+            </a>
+            <a
+              href="#contact"
+              onClick={handleDismiss}
+              className="group relative z-0 inline-flex items-center justify-center gap-2 h-10 rounded-lg
+                         text-[13px] font-medium tracking-wide cursor-pointer overflow-hidden
+                         bg-gradient-to-b from-white/15 to-white/5 text-white
+                         border border-b-2 border-white/[0.08]
+                         ring-1 ring-inset ring-white/10
+                         shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_1px_3px_rgba(0,0,0,0.2)]
+                         transition-all duration-500
+                         before:absolute before:inset-0 before:-z-10
+                         before:translate-x-[150%] before:translate-y-[150%] before:scale-[2.5]
+                         before:rounded-[100%] before:bg-white/10 before:transition-transform before:duration-700 before:content-['']
+                         hover:scale-[1.03] hover:brightness-110 hover:before:translate-x-[0%] hover:before:translate-y-[0%]
+                         active:scale-[0.97] active:brightness-90
+                         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            >
+              <MessageCircle className="relative z-10 w-3.5 h-3.5" />
+              <span className="relative z-10">Lorem ipsum</span>
+            </a>
           </div>
         </div>
       </div>
