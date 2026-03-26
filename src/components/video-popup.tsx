@@ -108,6 +108,21 @@ export function VideoPopup() {
             />
           </div>
 
+          {/* Mute toggle (mobile) — top-left corner */}
+          <button
+            type="button"
+            onClick={toggleMute}
+            className="absolute top-2 left-2 z-20 md:hidden w-7 h-7 rounded-full
+                       bg-black/40 backdrop-blur-sm
+                       flex items-center justify-center cursor-pointer
+                       active:scale-90 transition-transform duration-200"
+            aria-label={muted ? "Slå lyd til" : "Slå lyd fra"}
+          >
+            {muted
+              ? <VolumeOff className="w-3 h-3 text-white" />
+              : <Volume2 className="w-3 h-3 text-white" />}
+          </button>
+
           {/* Tap-to-pause overlay (mobile) */}
           <button
             type="button"
