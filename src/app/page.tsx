@@ -6,6 +6,7 @@ import { Services } from "@/components/services";
 import { About } from "@/components/about";
 import { Contact } from "@/components/contact";
 import { Footer } from "@/components/footer";
+import { VideoPopup } from "@/components/video-popup";
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
+      <VideoPopup />
     </>
   );
 }
