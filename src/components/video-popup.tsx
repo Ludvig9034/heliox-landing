@@ -9,7 +9,7 @@ const DISMISS_KEY = "video-popup-dismissed";
 export function VideoPopup() {
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(true);
-  const [paused, setPaused] = useState(false);
+  const [paused, setPaused] = useState(true);
   const [muted, setMuted] = useState(true);
   const [progress, setProgress] = useState(0);
   const [showTapIcon, setShowTapIcon] = useState(false);
@@ -96,9 +96,9 @@ export function VideoPopup() {
           <video
             ref={videoRef}
             className="absolute inset-0 w-full h-full object-cover"
-            autoPlay
             muted
             loop
+            preload="metadata"
             playsInline
             onTimeUpdate={handleTimeUpdate}
             poster="/images/pop-up.jpeg"
@@ -116,6 +116,23 @@ export function VideoPopup() {
               style={{ width: `${progress}%` }}
             />
           </div>
+
+          {/* Play overlay — shown when paused */}
+          {paused && (
+            <button
+              type="button"
+              onClick={togglePause}
+              className="absolute inset-0 z-[18] flex items-center justify-center cursor-pointer"
+              aria-label="Afspil"
+            >
+              <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-white/20 backdrop-blur-md
+                              border border-white/20
+                              flex items-center justify-center
+                              shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
+                <Play className="w-6 h-6 md:w-7 md:h-7 text-white ml-1" />
+              </div>
+            </button>
+          )}
 
           {/* Mute toggle (mobile) — top-left corner */}
           <button
