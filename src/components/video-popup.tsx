@@ -99,10 +99,10 @@ export function VideoPopup() {
           {/* Bottom gradient for button readability */}
           <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" />
 
-          {/* Progress bar */}
-          <div className="absolute inset-x-0 bottom-[100px] z-20 h-[2px] bg-white/10">
+          {/* Progress bar — top edge */}
+          <div className="absolute inset-x-0 top-0 z-20 h-[4px] bg-black/20">
             <div
-              className="h-full bg-white/60 transition-[width] duration-200 ease-linear"
+              className="h-full bg-white transition-[width] duration-200 ease-linear"
               style={{ width: `${progress}%` }}
             />
           </div>
