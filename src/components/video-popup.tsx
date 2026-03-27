@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import Image from "next/image";
-import { X, Phone, MessageCircle, Pause, Play, Volume2, VolumeOff } from "lucide-react";
+import { X, Phone, MessageCircle } from "lucide-react";
 
 const DISMISS_KEY = "video-popup-dismissed";
 
@@ -10,9 +9,7 @@ export function VideoPopup() {
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(true);
   const [paused, setPaused] = useState(true);
-  const [muted, setMuted] = useState(true);
   const [progress, setProgress] = useState(0);
-  const [showTapIcon, setShowTapIcon] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -37,20 +34,12 @@ export function VideoPopup() {
     videoRef.current?.pause();
   }, []);
 
-  const togglePause = useCallback(() => {
+  const handlePlay = useCallback(() => {
     const v = videoRef.current;
     if (!v) return;
-    if (v.paused) { v.play(); setPaused(false); }
-    else { v.pause(); setPaused(true); }
-    setShowTapIcon(true);
-    setTimeout(() => setShowTapIcon(false), 600);
-  }, []);
-
-  const toggleMute = useCallback(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.muted = !v.muted;
-    setMuted(v.muted);
+    v.muted = false;
+    v.play();
+    setPaused(false);
   }, []);
 
   const handleTimeUpdate = useCallback(() => {
@@ -84,24 +73,14 @@ export function VideoPopup() {
 
         {/* Full-bleed video */}
         <div className="aspect-[7/12] relative overflow-hidden group/video">
-          <Image
-            src="/images/pop-up.jpeg"
-            alt=""
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 200px, 280px"
-            priority
-          />
-
           <video
             ref={videoRef}
             className="absolute inset-0 w-full h-full object-cover"
             muted
             loop
-            preload="metadata"
+            preload="auto"
             playsInline
             onTimeUpdate={handleTimeUpdate}
-            poster="/images/pop-up.jpeg"
           >
             <source src="/images/9x16_Motii_VSL Feb 2026_Loud Colors.mp4" type="video/mp4" />
           </video>
@@ -121,7 +100,7 @@ export function VideoPopup() {
           {paused && (
             <button
               type="button"
-              onClick={togglePause}
+              onClick={handlePlay}
               className="absolute inset-0 z-[18] flex items-center justify-center cursor-pointer"
               aria-label="Afspil"
             >
@@ -129,91 +108,12 @@ export function VideoPopup() {
                               border border-white/20
                               flex items-center justify-center
                               shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
-                <Play className="w-6 h-6 md:w-7 md:h-7 text-white ml-1" />
+                <svg viewBox="0 0 24 24" className="w-5 h-5 md:w-6 md:h-6 ml-[2px]" fill="none" stroke="white" strokeWidth="1.5" strokeLinejoin="round">
+                  <polygon points="6,3 20,12 6,21" />
+                </svg>
               </div>
             </button>
           )}
-
-          {/* Mute toggle (mobile) — top-left corner */}
-          <button
-            type="button"
-            onClick={toggleMute}
-            className="absolute top-2 left-2 z-20 md:hidden w-7 h-7 rounded-full
-                       bg-black/40 backdrop-blur-sm
-                       flex items-center justify-center cursor-pointer
-                       active:scale-90 transition-transform duration-200"
-            aria-label={muted ? "Slå lyd til" : "Slå lyd fra"}
-          >
-            {muted
-              ? <VolumeOff className="w-3 h-3 text-white" />
-              : <Volume2 className="w-3 h-3 text-white" />}
-          </button>
-
-          {/* Tap-to-pause overlay (mobile) */}
-          <button
-            type="button"
-            onClick={togglePause}
-            className="absolute inset-0 z-[15] md:hidden cursor-pointer"
-            aria-label={paused ? "Afspil" : "Pause"}
-          />
-          {/* Tap feedback icon (mobile) */}
-          <div className={`absolute inset-0 z-[16] md:hidden flex items-center justify-center pointer-events-none
-                           transition-opacity duration-300 ${showTapIcon ? "opacity-100" : "opacity-0"}`}>
-            <div className="w-12 h-12 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center">
-              {paused
-                ? <Pause className="w-5 h-5 text-white" />
-                : <Play className="w-5 h-5 text-white ml-0.5" />}
-            </div>
-          </div>
-
-          {/* Video controls (desktop only) */}
-          <div className="absolute bottom-[116px] left-3 z-20 hidden md:flex items-center gap-1.5
-                          opacity-0 group-hover/video:opacity-100 transition-opacity duration-200">
-            <button
-              type="button"
-              onClick={togglePause}
-              className="group/btn relative z-0 w-7 h-7 md:w-8 md:h-8 rounded-full overflow-hidden cursor-pointer
-                         bg-gradient-to-b from-white/20 to-white/5 backdrop-blur-md
-                         border border-white/[0.12]
-                         ring-1 ring-inset ring-white/10
-                         shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_1px_3px_rgba(0,0,0,0.2)]
-                         flex items-center justify-center
-                         transition-transform duration-300
-                         before:absolute before:inset-0 before:-z-10
-                         before:translate-x-[150%] before:translate-y-[150%] before:scale-[2.5]
-                         before:rounded-[100%] before:bg-white/15 before:transition-transform before:duration-500 before:content-['']
-                         hover:scale-110 hover:before:translate-x-[0%] hover:before:translate-y-[0%]
-                         active:scale-95
-                         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              aria-label={paused ? "Afspil" : "Pause"}
-            >
-              {paused
-                ? <Play className="relative z-10 w-3 h-3 text-white ml-0.5" />
-                : <Pause className="relative z-10 w-3 h-3 text-white" />}
-            </button>
-            <button
-              type="button"
-              onClick={toggleMute}
-              className="group/btn relative z-0 w-7 h-7 md:w-8 md:h-8 rounded-full overflow-hidden cursor-pointer
-                         bg-gradient-to-b from-white/20 to-white/5 backdrop-blur-md
-                         border border-white/[0.12]
-                         ring-1 ring-inset ring-white/10
-                         shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_1px_3px_rgba(0,0,0,0.2)]
-                         flex items-center justify-center
-                         transition-transform duration-300
-                         before:absolute before:inset-0 before:-z-10
-                         before:translate-x-[150%] before:translate-y-[150%] before:scale-[2.5]
-                         before:rounded-[100%] before:bg-white/15 before:transition-transform before:duration-500 before:content-['']
-                         hover:scale-110 hover:before:translate-x-[0%] hover:before:translate-y-[0%]
-                         active:scale-95
-                         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-              aria-label={muted ? "Slå lyd til" : "Slå lyd fra"}
-            >
-              {muted
-                ? <VolumeOff className="relative z-10 w-3 h-3 text-white" />
-                : <Volume2 className="relative z-10 w-3 h-3 text-white" />}
-            </button>
-          </div>
 
           {/* Action buttons */}
           <div className="absolute inset-x-0 bottom-0 z-10 p-2.5 md:p-3 flex flex-col gap-1.5 md:gap-2">
