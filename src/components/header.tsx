@@ -51,23 +51,23 @@ export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 px-4 md:px-6">
-      <div className="relative w-full max-w-5xl">
+    <header className="fixed top-0 left-0 right-0 z-50">
+      <div className="relative w-full">
         {/* Glass distortion layer */}
         <div
-          className="absolute top-0 left-0 h-full w-full overflow-hidden rounded-2xl -z-10"
+          className="absolute top-0 left-0 h-full w-full overflow-hidden -z-10"
           style={{ backdropFilter: 'url("#header-glass")' }}
         />
 
         {/* Glass shadow overlay */}
         <div
-          className="absolute top-0 left-0 z-0 h-full w-full rounded-2xl
-                     shadow-[0_0_6px_rgba(0,0,0,0.03),0_2px_8px_rgba(0,0,0,0.06),inset_3px_3px_0.5px_-3px_rgba(0,0,0,0.5),inset_-3px_-3px_0.5px_-3px_rgba(0,0,0,0.45),inset_1px_1px_1px_-0.5px_rgba(0,0,0,0.3),inset_-1px_-1px_1px_-0.5px_rgba(0,0,0,0.3),inset_0_0_8px_6px_rgba(0,0,0,0.06),0_0_16px_rgba(255,255,255,0.1)]"
+          className="absolute top-0 left-0 z-0 h-full w-full
+                     shadow-[0_0_6px_rgba(0,0,0,0.03),0_2px_8px_rgba(0,0,0,0.06),inset_0_-1px_1px_-0.5px_rgba(0,0,0,0.3),inset_0_0_8px_6px_rgba(0,0,0,0.06)]"
         />
 
         {/* Content */}
-        <div className="relative z-10 px-5 md:px-6">
-          <div className="flex h-14 items-center justify-between">
+        <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10">
+          <div className="flex h-16 items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2.5">
               <LogoLoop size={24} className="text-heading" />
