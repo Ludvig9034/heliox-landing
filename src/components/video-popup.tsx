@@ -34,12 +34,17 @@ export function VideoPopup() {
     videoRef.current?.pause();
   }, []);
 
-  const handlePlay = useCallback(() => {
+  const togglePlay = useCallback(() => {
     const v = videoRef.current;
     if (!v) return;
-    v.muted = false;
-    v.play();
-    setPaused(false);
+    if (v.paused) {
+      v.muted = false;
+      v.play();
+      setPaused(false);
+    } else {
+      v.pause();
+      setPaused(true);
+    }
   }, []);
 
   const handleTimeUpdate = useCallback(() => {
@@ -62,7 +67,7 @@ export function VideoPopup() {
         <button
           type="button"
           onClick={handleDismiss}
-          className="absolute top-2 right-2 md:top-3 md:right-3 z-10 w-6 h-6 md:w-7 md:h-7 rounded-full bg-black/40 backdrop-blur-sm
+          className="absolute top-2 right-2 md:top-3 md:right-3 z-20 w-6 h-6 md:w-7 md:h-7 rounded-full bg-black/40 backdrop-blur-sm
                      flex items-center justify-center cursor-pointer
                      hover:bg-black/60 transition-colors duration-200
                      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
@@ -96,24 +101,25 @@ export function VideoPopup() {
             />
           </div>
 
-          {/* Play overlay — shown when paused */}
-          {paused && (
-            <button
-              type="button"
-              onClick={handlePlay}
-              className="absolute inset-0 z-[18] flex items-center justify-center cursor-pointer"
-              aria-label="Afspil"
-            >
-              <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-white/20 backdrop-blur-md
-                              border border-white/20
-                              flex items-center justify-center
-                              shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
-                <svg viewBox="0 0 24 24" className="w-5 h-5 md:w-6 md:h-6 ml-[2px]" fill="none" stroke="white" strokeWidth="1.5" strokeLinejoin="round">
-                  <polygon points="6,3 20,12 6,21" />
-                </svg>
-              </div>
-            </button>
-          )}
+          {/* Tap/click to toggle play — always active */}
+          <button
+            type="button"
+            onClick={togglePlay}
+            className="absolute inset-0 z-[18] flex items-center justify-center cursor-pointer"
+            aria-label={paused ? "Afspil" : "Pause"}
+          >
+            {/* Play/pause icon — always visible when paused, fades on play */}
+            <div className={`w-14 h-14 md:w-16 md:h-16 rounded-full bg-white/20 backdrop-blur-md
+                            border border-white/20
+                            flex items-center justify-center
+                            shadow-[0_4px_20px_rgba(0,0,0,0.2)]
+                            transition-opacity duration-300
+                            ${paused ? "opacity-100" : "opacity-0"}`}>
+              <svg viewBox="0 0 24 24" className="w-5 h-5 md:w-6 md:h-6 ml-[2px]" fill="none" stroke="white" strokeWidth="1.5" strokeLinejoin="round">
+                <polygon points="6,3 20,12 6,21" />
+              </svg>
+            </div>
+          </button>
 
           {/* Action buttons */}
           <div className="absolute inset-x-0 bottom-0 z-10 p-2.5 md:p-3 flex flex-col gap-1.5 md:gap-2">
