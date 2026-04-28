@@ -83,6 +83,11 @@ This file provides guidance to Claude Code when working with code in this reposi
 - **Spacing:** Use intentional, consistent spacing tokens via Tailwind.
 - **Depth:** Surfaces should have a layering system (base → elevated → floating).
 
+## Screenshots
+- **Always save screenshots to `temporary-screenshots/`** in the project root (e.g. `temporary-screenshots/screenshot-contact.png`)
+- Never save screenshots to the project root or any other directory
+- The `temporary-screenshots/` folder is gitignored — it's for review only
+
 ## Hard Rules
 - Do not add sections, features, or content not in the spec
 - Do not "improve" a reference design — match it
