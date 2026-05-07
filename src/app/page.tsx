@@ -1,27 +1,23 @@
-import { Header } from "@/components/header";
-import { Hero } from "@/components/hero";
-import { Cases } from "@/components/cases";
-import { Process } from "@/components/process";
-import { Services } from "@/components/services";
-import { About } from "@/components/about";
-import { Contact } from "@/components/contact";
-import { Footer } from "@/components/footer";
-import { VideoPopup } from "@/components/video-popup";
+import { HelioxNav } from "@/components/heliox/nav";
+import { HelioxHero } from "@/components/heliox/hero";
+import { HelioxProblem } from "@/components/heliox/problem";
+import { HelioxTabs } from "@/components/heliox/tabs";
+import { HelioxStatement } from "@/components/heliox/statement";
+import { HelioxCta } from "@/components/heliox/cta";
+import { HelioxFooter } from "@/components/heliox/footer";
 
 export default function Home() {
   return (
-    <>
-      <Header />
+    <div className="heliox">
+      <HelioxNav />
       <main>
-        <Hero />
-        <Cases />
-        <Process />
-        <Services />
-        <About />
-        <Contact />
+        <HelioxHero />
+        <HelioxProblem />
+        <HelioxTabs />
+        <HelioxStatement />
+        <HelioxCta />
       </main>
-      <Footer />
-      <VideoPopup />
-    </>
+      <HelioxFooter />
+    </div>
   );
 }
