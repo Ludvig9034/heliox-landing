@@ -99,18 +99,18 @@ function IconSignal() {
 const problems = [
   {
     Icon: IconAdmin,
-    title: "Tiden forsvinder i administration.",
-    desc: "Du sætter 5 timer af til salg. CRM-opdateringer og opfølgningsmails sluger 3 af dem. Resten er afbrydelser. Du er reelt fokuseret en brøkdel af tiden — og det kan dine kunder mærke.",
+    title: "Tiden forsvinder i efterbehandling.",
+    desc: "Du sætter 5 timer af til salg. CRM-opdateringer, opfølgningsmails, sende tilbud, sende møde reminders sluger 3 af dem. Resten er afbrydelser. Du er reelt fokuseret en brøkdel af tiden — og det kan dine kunder mærke.",
   },
   {
     Icon: IconKpi,
-    title: "KPI'erne flytter sig hurtigere, end du kan løbe.",
-    desc: "Målene er ambitiøse — som de skal være. Men jo flere opgaver der ligger mellem linjerne, jo længere væk fra dem kommer du. Resultatet: KPI'erne bliver ikke ramt, og CAC kører løbsk.",
+    title: "Det rigtige budskab — på det rigtige tidspunkt.",
+    desc: "Tilbuddet burde være sendt en time efter mødet. Der er 7 touchpoints mellem første møde og lukket deal. De fleste sælgere når 2. Nurture-flowet burde matche deres konkrete pain — ikke kun deres branche. Det sker ikke, fordi ingen har tid til at eksekvere det manuelt igen og igen. Det gør vi.",
   },
   {
     Icon: IconSignal,
-    title: "Du overser det, der lukker dine deals.",
-    desc: "Du måler det samme som alle andre — calls, mails, møder. Men det er ikke det, der afgør salget. Det gør kundens pain, urgency, ønskede outcome — og deres egne ord fra mødet. De signaler sidder du med hver dag, uden at se dem. Og det er der, du taber salg, du burde have lukket.",
+    title: "Du ved ikke, hvem der er klar til at købe.",
+    desc: "Hvem er din bedste kunde egentlig? Hvilken kanal konverterer bedst, og hvad skal du sige til dem? Hvad siger de, der siger ja, som de andre ikke gør? Hvordan finder du flere købsklare kunder og sender dem den rigtige besked på det rigtige tidspunkt? Det ved din GTM-analytiker. Problemet er bare, at du ikke har en.",
   },
 ];
 

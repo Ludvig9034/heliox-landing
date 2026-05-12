@@ -164,16 +164,16 @@ function TabVisual3({ active }: { active: boolean }) {
 
 const tabs = [
   {
-    title: "Hård data og bløde signaler — endelig samlet.",
-    desc: "Heliox fanger både dine hårde KPI'er — calls, mails, pipeline — og det andre overser: kundens pain, urgency, ønskede outcome, og deres egne ord direkte fra mødet. For første gang ser du det, der reelt afgør et salg, ét sted.",
+    title: "Efter mødet ved systemet mere end du husker.",
+    desc: "Heliox fanger hvad der blev sagt, hvad kunden egentlig mente, og hvad næste skridt er — automatisk. Calls, pipeline, deal-værdi. Men også: hvad der gør ondt hos kunden lige nu, hvorfor de overvejer at skifte, hvad deres kriterier er for at sige ja, og hvad de egentlig forsøger at opnå. Ét sted. For første gang.",
   },
   {
     title: "Direkte i jeres nuværende CRM. Ikke endnu et system.",
-    desc: "Heliox kobler sig på jeres eksisterende CRM. Ingen migrering, ingen ny platform at lære. Sælgerne ser anbefalingerne lige der, hvor de allerede arbejder — næste handling, næste prioritet, næste deal at lukke.",
+    desc: "Heliox kobler sig på jeres eksisterende CRM. Ingen migrering, ingen ny platform at lære. Sælgerne ser anbefalingerne lige der, hvor de allerede arbejder. Næste handling klar. Næste deal identificeret.",
   },
   {
     title: "Bliver skarpere for hver deal, du lukker.",
-    desc: "Heliox lærer af hvert opkald, hver vunden deal, hver tabt mulighed. Systemet bliver bedre for hver dag — og bliver til sidst en model, der forstår jeres salg specifikt. Ikke en generisk AI.",
+    desc: "Heliox lærer af hvert kald, hver vunden deal, hver tabt mulighed — og bliver til sidst en model, der forstår jeres salg specifikt. Ikke en generisk AI.",
   },
 ];
 
@@ -194,7 +194,7 @@ export function HelioxTabs() {
           03 — Sælg mere
         </span>
         <h2 className="c-h2" data-reveal data-delay="60">
-          Sælg mere. Bedre. Smartere.
+          Dit salg drevet som en enterprise — uden et team af 100 mand.
         </h2>
       </div>
 

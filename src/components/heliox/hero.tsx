@@ -274,14 +274,13 @@ export function HelioxHero() {
       </h1>
 
       <p className="c-hero-sub" data-reveal data-delay="140">
-        Heliox samler din hårde data og de bløde signaler i ét værktøj og gør
-        dem til konkrete handlinger direkte i jeres CRM.
+        Slut med timer på efterbehandling. Heliox omdanner dine møder og samtaler til opdateret CRM, noter, emails, tilbud og meget andet — helt automatisk.
       </p>
 
       <p className="c-hero-promise" data-reveal data-delay="200">
-        <span>Mindre administration.</span>
-        <span>Mere salg.</span>
-        <span>Fra dag 1.</span>
+        <span>Ingen efterbehandling.</span>
+        <span>Ingen glemte følgeups.</span>
+        <span>Bare salg.</span>
       </p>
 
       <div className="c-hero-cta" data-reveal data-delay="260">
